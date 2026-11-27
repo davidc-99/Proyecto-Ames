@@ -1,0 +1,903 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "adf-ames-etlinmo-corregido"
+		},
+		"LS_Blob_Ames_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"LS_Blob_Ames\""
+		},
+		"LS_Mongo_Atlas_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"LS_Mongo_Atlas\""
+		},
+		"LS_Neon_AmesDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"LS_Neon_AmesDB\""
+		},
+		"LS_Mongo_Atlas_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "test"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Blob_Ames')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Conexión a Azure Blob Storage (contenedor 'sources'): entrada, staging, intermedios y salida.",
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_Blob_Ames_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Mongo_Atlas')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Conexión a MongoDB Atlas (base 'test'): colecciones garage, bsmt, pool y misc.",
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "MongoDbAtlas",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_Mongo_Atlas_connectionString')]",
+					"database": "[parameters('LS_Mongo_Atlas_properties_typeProperties_database')]",
+					"driverVersion": "v2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Neon_AmesDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Conexión a la base relacional AmesDB en Neon (PostgreSQL).",
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSql",
+				"version": "1.0",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_Neon_AmesDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_INT_CasasLimpias')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "INTERMEDIO · clean/casas_limpias.csv: CSV de propiedades ya limpio (salida de DF_01).",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "03_Intermedios"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "casas_limpias.csv",
+						"folderPath": "clean",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_INT_CasasMongo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "INTERMEDIO · clean/MONGO1.csv: casas + garage, bsmt, pool y misc (salida de DF_02).",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "03_Intermedios"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "MONGO1.csv",
+						"folderPath": "clean",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_INT_Neon')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "INTERMEDIO · clean/neon1.csv: construcción con Gr Liv Area y códigos traducidos (salida de DF_03).",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "03_Intermedios"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "neon1.csv",
+						"folderPath": "clean",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_OUT_Salida')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "SALIDA · output/salida.csv: 2.930 filas × 81 columnas en camelCase, separador ; (salida de DF_04).",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "04_Salida"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "output",
+						"container": "sources"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Csv_AmesProperty')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Archivo input/AmesProperty.csv (separador ;): 2.930 propiedades, 19 campos. Define el universo de PID.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "AmesProperty.csv",
+						"folderPath": "input",
+						"container": "sources"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "PID;Lot Frontage;Lot Area;Street;Alley;Lot Shape;Land Contour;Utilities;Lot Config;Land Slope;Neighborhood;Condition 1;Condition 2;Bldg Type;House Style;Overall Qual;Overall Cond;Year Built;Year Remod/Add",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Mongo_bsmt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Colección bsmt (MongoDB Atlas): 0 o 1 documento por PID.",
+				"linkedServiceName": {
+					"referenceName": "LS_Mongo_Atlas",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "MongoDbAtlasCollection",
+				"schema": [],
+				"typeProperties": {
+					"collection": "bsmt"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Mongo_Atlas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Mongo_garage')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Colección garage (MongoDB Atlas): 0 o 1 documento por PID.",
+				"linkedServiceName": {
+					"referenceName": "LS_Mongo_Atlas",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "MongoDbAtlasCollection",
+				"schema": [],
+				"typeProperties": {
+					"collection": "garage"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Mongo_Atlas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Mongo_misc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Colección misc (MongoDB Atlas): 0 o 1 documento por PID.",
+				"linkedServiceName": {
+					"referenceName": "LS_Mongo_Atlas",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "MongoDbAtlasCollection",
+				"schema": [],
+				"typeProperties": {
+					"collection": "misc"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Mongo_Atlas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Mongo_pool')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Colección pool (MongoDB Atlas): solo 13 documentos.",
+				"linkedServiceName": {
+					"referenceName": "LS_Mongo_Atlas",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "MongoDbAtlasCollection",
+				"schema": [],
+				"typeProperties": {
+					"collection": "pool"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Mongo_Atlas')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Neon_amesdbtemp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Tabla public.amesdbtemp (Neon): construcción, 1 fila por PID; calidades y MS Zoning como id.",
+				"linkedServiceName": {
+					"referenceName": "LS_Neon_AmesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "Exter Cond",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Exter Qual",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Heating QC",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Kitchen Qual",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MS Zoning",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "pid",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Roof Style",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Roof Matl",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Exterior 1st",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Exterior 2nd",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Mas Vnr Type",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Mas Vnr Area",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "foundation",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "heating",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Central Air",
+						"type": "boolean",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "electrical",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "1st Flr SF",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "2nd Flr SF",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Low Qual Fin SF",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Kitchen AbvGr",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TotRms AbvGrd",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "functional",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fireplaces",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fireplace Qu",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Paved Drive",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wood Deck SF",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Open Porch SF",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Enclosed Porch",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "3Ssn Porch",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Screen Porch",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "fence",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MS SubClass",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "public",
+					"table": "amesdbtemp"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Neon_AmesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Neon_floordetail')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Tabla public.floordetail (Neon): habitaciones y baños por piso (1 o 2 filas por PID).",
+				"linkedServiceName": {
+					"referenceName": "LS_Neon_AmesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "pid",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Floor",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bedrooms",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Full Bath",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Half Bath",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "public",
+					"table": "floordetail"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Neon_AmesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Neon_mssubclass')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Catálogo public.mssubclass (Neon): descripción de MS SubClass. Solo de referencia; no se usa en la salida.",
+				"linkedServiceName": {
+					"referenceName": "LS_Neon_AmesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "description",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "code",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "public",
+					"table": "mssubclass"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Neon_AmesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Neon_mszoning')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Catálogo public.mszoning (Neon): id → código de zonificación (RL, RM, FV…).",
+				"linkedServiceName": {
+					"referenceName": "LS_Neon_AmesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "code",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "public",
+					"table": "mszoning"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Neon_AmesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Neon_saleproperty')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Tabla public.saleproperty (Neon): fecha, tipo, condición y precio de venta.",
+				"linkedServiceName": {
+					"referenceName": "LS_Neon_AmesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "pid",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sale Date",
+						"type": "timestamp without time zone",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sale Type",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sale Condition",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "saleprice",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "public",
+					"table": "saleproperty"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Neon_AmesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SRC_Neon_typequality')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "ORIGEN · Catálogo public.typequality (Neon): id → código de calidad (Ex, Gd, TA, Fa, Po).",
+				"linkedServiceName": {
+					"referenceName": "LS_Neon_AmesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "01_Origen"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "code",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "description",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "public",
+					"table": "typequality"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Neon_AmesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Csv_AmesProperty')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Archivo input/AmesProperty.csv (separador ;) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "AmesPropertyData.csv",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Mongo_bsmt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Colección bsmt (MongoDB Atlas) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "bsmtdata.csv",
+						"folderPath": "mongo",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_Ames')]"
+			]
+		}
+	]
+}

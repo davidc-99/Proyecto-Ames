@@ -1,0 +1,2155 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "adf-ames-etlinmo-corregido"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Mongo_garage')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Colección garage (MongoDB Atlas) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "garagedata.csv",
+						"folderPath": "mongo",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Mongo_misc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Colección misc (MongoDB Atlas) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "miscdata.csv",
+						"folderPath": "mongo",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Mongo_pool')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Colección pool (MongoDB Atlas) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "pooldata.csv",
+						"folderPath": "mongo",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Neon_amesdbtemp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Tabla public.amesdbtemp (Neon) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "AmesdbTempData.csv",
+						"folderPath": "Neon",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Neon_floordetail')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Tabla public.floordetail (Neon) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "FloorDetailData.csv",
+						"folderPath": "Neon",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Neon_mssubclass')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Catálogo public.mssubclass (Neon) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "MssubclassData.csv",
+						"folderPath": "Neon",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Neon_mszoning')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Catálogo public.mszoning (Neon) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "MszoningData.csv",
+						"folderPath": "Neon",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Neon_saleproperty')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Tabla public.saleproperty (Neon) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "SalesPropertyData.csv",
+						"folderPath": "Neon",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_STG_Neon_typequality')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "STAGING · Copia en CSV de Catálogo public.typequality (Neon) con columnas sin espacios.",
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_Ames",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "02_Staging"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "TypequalityData.csv",
+						"folderPath": "Neon",
+						"container": "sources"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Csv_AmesProperty')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia AmesProperty.csv a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Csv_AmesProperty",
+						"description": "EXTRACCIÓN · Copia AmesProperty.csv a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "PID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Lot Frontage",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LotFrontage",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Lot Area",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LotArea",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Street",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Street",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Alley",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Alley",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Lot Shape",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LotShape",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Land Contour",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LandContour",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Utilities",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Utilities",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Lot Config",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LotConfig",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Land Slope",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LandSlope",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Neighborhood",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Neighborhood",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Condition 1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Condition1",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Condition 2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Condition2",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Bldg Type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "BldgType",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "House Style",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "HouseStyle",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Overall Qual",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "OverallQual",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Overall Cond",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "OverallCond",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Year Built",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "YearBuilt",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Year Remod/Add",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "YearRemod/Add",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Csv_AmesProperty",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Csv_AmesProperty",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Mongo_bsmt')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia bsmt a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Mongo_bsmt",
+						"description": "EXTRACCIÓN · Copia bsmt a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['PID']['$numberLong']"
+										},
+										"sink": {
+											"name": "PID"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Bsmt Qual']"
+										},
+										"sink": {
+											"name": "BsmtQual"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Bsmt Cond']"
+										},
+										"sink": {
+											"name": "BsmtCond"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Bsmt Exposure']"
+										},
+										"sink": {
+											"name": "BsmtExposure"
+										}
+									},
+									{
+										"source": {
+											"path": "$['BsmtFin Type 1']"
+										},
+										"sink": {
+											"name": "BsmtFinType 1"
+										}
+									},
+									{
+										"source": {
+											"path": "$['BsmtFin SF 1']['$numberLong']"
+										},
+										"sink": {
+											"name": "BsmtFinSF1"
+										}
+									},
+									{
+										"source": {
+											"path": "$['BsmtFin Type 2']"
+										},
+										"sink": {
+											"name": "BsmtFinType2"
+										}
+									},
+									{
+										"source": {
+											"path": "$['BsmtFin SF 2']['$numberLong']"
+										},
+										"sink": {
+											"name": "BsmtFinSF2"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Bsmt Unf SF']['$numberLong']"
+										},
+										"sink": {
+											"name": "BsmtUnfSF"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Total Bsmt SF']['$numberLong']"
+										},
+										"sink": {
+											"name": "TotalBsmtSF"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Bsmt Full Bath']['$numberLong']"
+										},
+										"sink": {
+											"name": "BsmtFullBath"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Bsmt Half Bath']['$numberLong']"
+										},
+										"sink": {
+											"name": "BsmtHalfBath"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Mongo_bsmt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Mongo_bsmt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Mongo_garage')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia garage a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Mongo_garage",
+						"description": "EXTRACCIÓN · Copia garage a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Order']['$numberLong']"
+										},
+										"sink": {
+											"name": "Order"
+										}
+									},
+									{
+										"source": {
+											"path": "$['PID']['$numberLong']"
+										},
+										"sink": {
+											"name": "PID"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Type']"
+										},
+										"sink": {
+											"name": "GarageType"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Yr Blt']['$numberLong']"
+										},
+										"sink": {
+											"name": "GarageYrBlt"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Finish']"
+										},
+										"sink": {
+											"name": "GarageFinish"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Cars']['$numberLong']"
+										},
+										"sink": {
+											"name": "GarageCars"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Area']['$numberLong']"
+										},
+										"sink": {
+											"name": "GarageArea"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Qual']"
+										},
+										"sink": {
+											"name": "GarageQual"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Garage Cond']"
+										},
+										"sink": {
+											"name": "GarageCond"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Mongo_garage",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Mongo_garage",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Mongo_garage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Mongo_misc')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia misc a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Mongo_misc",
+						"description": "EXTRACCIÓN · Copia misc a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['PID']['$numberLong']"
+										},
+										"sink": {
+											"name": "PID"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Misc Feature']"
+										},
+										"sink": {
+											"name": "MiscFeature"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Misc Val']['$numberLong']"
+										},
+										"sink": {
+											"name": "MiscVal"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Mongo_misc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Mongo_misc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Mongo_misc')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Mongo_pool')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia pool a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Mongo_pool",
+						"description": "EXTRACCIÓN · Copia pool a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "MongoDbAtlasSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['PID']['$numberLong']"
+										},
+										"sink": {
+											"name": "PID"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Pool Area']['$numberLong']"
+										},
+										"sink": {
+											"name": "PoolArea"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Pool QC']"
+										},
+										"sink": {
+											"name": "PoolQC"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Mongo_pool",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Mongo_pool",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Mongo_pool')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Neon_amesdbtemp')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia amesdbtemp a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Neon_amesdbtemp",
+						"description": "EXTRACCIÓN · Copia amesdbtemp a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Exter Cond",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "ExterCond",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Exter Qual",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "ExterQual",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Heating QC",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Heating QC",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Kitchen Qual",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "KitchenQual",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MS Zoning",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "MSZoning",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "pid",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Pid",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Roof Style",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "RoofStyle",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Roof Matl",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "RoofMatl",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Exterior 1st",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Exterior1st",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Exterior 2nd",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Exterior2nd",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Mas Vnr Type",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "MasVnrType",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Mas Vnr Area",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "MasVnrArea",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "foundation",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Foundation",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "heating",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Heating",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Central Air",
+											"type": "Boolean",
+											"physicalType": "boolean"
+										},
+										"sink": {
+											"name": "Central Air",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "electrical",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "lectrical",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "1st Flr SF",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "1stFlrSF",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "2nd Flr SF",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "2ndFlrSF",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Low Qual Fin SF",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "LowQualFinSF",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Kitchen AbvGr",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Kitchen AbvGr",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TotRms AbvGrd",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "TotRmsAbvGrd",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "functional",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Functional",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fireplaces",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Fireplaces",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Fireplace Qu",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "FireplaceQu",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Paved Drive",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "PavedDrive",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Wood Deck SF",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "WoodDeckSF",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Open Porch SF",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "OpenPorchSF",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Enclosed Porch",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "EnclosedPorch",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "3Ssn Porch",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "3SsnPorch",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fence",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Fence",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Screen Porch",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "ScreenPorch",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MS SubClass",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "MSSubClass",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Neon_amesdbtemp",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Neon_amesdbtemp",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Neon_amesdbtemp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Neon_floordetail')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia floordetail a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Neon_floordetail",
+						"description": "EXTRACCIÓN · Copia floordetail a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "pid",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "PID",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Floor",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Floor",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "bedrooms",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Bedrooms",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Full Bath",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "FullBath",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Half Bath",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "HalfBath",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Neon_floordetail",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Neon_floordetail",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Neon_floordetail')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Neon_mssubclass')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia mssubclass a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Neon_mssubclass",
+						"description": "EXTRACCIÓN · Copia mssubclass a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Description",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "code",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "MSSubClass",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Neon_mssubclass",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Neon_mssubclass",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Neon_mssubclass')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Neon_mszoning')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia mszoning a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Neon_mszoning",
+						"description": "EXTRACCIÓN · Copia mszoning a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Id",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Description",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "code",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "MSZoning",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Neon_mszoning",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Neon_mszoning",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Neon_mszoning')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Neon_saleproperty')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia saleproperty a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Neon_saleproperty",
+						"description": "EXTRACCIÓN · Copia saleproperty a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "pid",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "PID",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Sale Date",
+											"type": "DateTime",
+											"physicalType": "timestamp without time zone"
+										},
+										"sink": {
+											"name": "SaleDate",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Sale Type",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "SaleType",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Sale Condition",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "SaleCondition",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "saleprice",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "salePrice",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Neon_saleproperty",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Neon_saleproperty",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Neon_saleproperty')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_01_Copia_Neon_typequality')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "EXTRACCIÓN · Copia typequality a su archivo de staging en Blob Storage.",
+				"activities": [
+					{
+						"name": "CP_Neon_typequality",
+						"description": "EXTRACCIÓN · Copia typequality a su archivo de staging en Blob Storage.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "Id",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "code",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Code",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "character varying"
+										},
+										"sink": {
+											"name": "Description",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SRC_Neon_typequality",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_STG_Neon_typequality",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "ETL_Ames"
+				},
+				"annotations": [
+					"proyecto-ames"
+				],
+				"lastPublishTime": "2026-11-27T01:17:02Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_STG_Neon_typequality')]"
+			]
+		}
+	]
+}
