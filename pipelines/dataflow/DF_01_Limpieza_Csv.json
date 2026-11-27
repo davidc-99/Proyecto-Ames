@@ -1,0 +1,125 @@
+{
+	"name": "DF_01_Limpieza_Csv",
+	"properties": {
+		"description": "Limpia el CSV de propiedades: Year Remod/Add vacío → Year Built (regla obligatoria); Lot Frontage vacío → promedio del barrio (decisión del equipo); vacíos → NA / 0. Escribe clean/casas_limpias.csv.",
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_STG_Csv_AmesProperty",
+						"type": "DatasetReference"
+					},
+					"name": "srcCasasCsv",
+					"description": "Copia del CSV de propiedades (2.930 casas)."
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_INT_CasasLimpias",
+						"type": "DatasetReference"
+					},
+					"name": "snkCasasLimpias",
+					"description": "Escribe clean/casas_limpias.csv (un solo archivo)."
+				}
+			],
+			"transformations": [
+				{
+					"name": "drvFaltantesCsv",
+					"description": "Texto vacío → NA; número vacío → 0."
+				},
+				{
+					"name": "aggPromedioLotFrontage",
+					"description": "Promedio de Lot Frontage por barrio."
+				},
+				{
+					"name": "joinPromedioBarrio",
+					"description": "Pega a cada casa el promedio de su barrio."
+				},
+				{
+					"name": "drvLotFrontage",
+					"description": "Lot Frontage vacío → promedio del barrio (decisión del equipo)."
+				},
+				{
+					"name": "selColumnasCsv",
+					"description": "Deja las 19 columnas originales."
+				},
+				{
+					"name": "drvYearRemodAdd",
+					"description": "REGLA: Year Remod/Add vacío → Year Built."
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          PID as long,",
+				"          LotFrontage as double,",
+				"          LotArea as long,",
+				"          Street as string,",
+				"          Alley as string,",
+				"          LotShape as string,",
+				"          LandContour as string,",
+				"          Utilities as string,",
+				"          LotConfig as string,",
+				"          LandSlope as string,",
+				"          Neighborhood as string,",
+				"          Condition1 as string,",
+				"          Condition2 as string,",
+				"          BldgType as string,",
+				"          HouseStyle as string,",
+				"          OverallQual as long,",
+				"          OverallCond as long,",
+				"          YearBuilt as long,",
+				"          {YearRemod/Add} as long",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> srcCasasCsv",
+				"drvYearRemodAdd derive(each(match(type=='string'), $$ = iif(isNull($$) || trim($$) == '', 'NA', $$)),",
+				"          each(match(type=='integer'||type=='long'||type=='short'), $$ = iifNull($$, 0)),",
+				"          each(match(type=='double'||type=='float'||type=='decimal'), $$ = iifNull($$, 0.0))) ~> drvFaltantesCsv",
+				"srcCasasCsv aggregate(groupBy(Neighborhood),",
+				"     LF_med = avg(LotFrontage)) ~> aggPromedioLotFrontage",
+				"srcCasasCsv, aggPromedioLotFrontage join(srcCasasCsv@Neighborhood == aggPromedioLotFrontage@Neighborhood,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinPromedioBarrio",
+				"joinPromedioBarrio derive(LotFrontage = iifNull(toDouble(LotFrontage), LF_med)) ~> drvLotFrontage",
+				"drvLotFrontage select(mapColumn(",
+				"          PID,",
+				"          LotFrontage,",
+				"          LotArea,",
+				"          Street,",
+				"          Alley,",
+				"          LotShape,",
+				"          LandContour,",
+				"          Utilities,",
+				"          LotConfig,",
+				"          LandSlope,",
+				"          Neighborhood = srcCasasCsv@Neighborhood,",
+				"          Condition1,",
+				"          Condition2,",
+				"          BldgType,",
+				"          HouseStyle,",
+				"          OverallQual,",
+				"          OverallCond,",
+				"          YearBuilt,",
+				"          {YearRemod/Add}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selColumnasCsv",
+				"selColumnasCsv derive({YearRemod/Add} = iif(isNull({YearRemod/Add}) || trim(toString({YearRemod/Add})) == '', toInteger({YearBuilt}), toInteger({YearRemod/Add}))) ~> drvYearRemodAdd",
+				"drvFaltantesCsv sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['casas_limpias.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> snkCasasLimpias"
+			]
+		}
+	}
+}

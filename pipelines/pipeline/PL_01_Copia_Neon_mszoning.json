@@ -1,0 +1,104 @@
+{
+	"name": "PL_01_Copia_Neon_mszoning",
+	"properties": {
+		"description": "EXTRACCIÓN · Copia mszoning a su archivo de staging en Blob Storage.",
+		"activities": [
+			{
+				"name": "CP_Neon_mszoning",
+				"description": "EXTRACCIÓN · Copia mszoning a su archivo de staging en Blob Storage.",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "Id",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "character varying"
+								},
+								"sink": {
+									"name": "Description",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "code",
+									"type": "String",
+									"physicalType": "character varying"
+								},
+								"sink": {
+									"name": "MSZoning",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_SRC_Neon_mszoning",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_STG_Neon_mszoning",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

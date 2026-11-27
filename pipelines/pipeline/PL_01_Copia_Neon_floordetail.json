@@ -1,0 +1,127 @@
+{
+	"name": "PL_01_Copia_Neon_floordetail",
+	"properties": {
+		"description": "EXTRACCIÓN · Copia floordetail a su archivo de staging en Blob Storage.",
+		"activities": [
+			{
+				"name": "CP_Neon_floordetail",
+				"description": "EXTRACCIÓN · Copia floordetail a su archivo de staging en Blob Storage.",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "pid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "PID",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Floor",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "Floor",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "bedrooms",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "Bedrooms",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Full Bath",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "FullBath",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Half Bath",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "HalfBath",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_SRC_Neon_floordetail",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_STG_Neon_floordetail",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

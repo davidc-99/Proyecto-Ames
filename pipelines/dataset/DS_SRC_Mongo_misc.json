@@ -1,0 +1,22 @@
+{
+	"name": "DS_SRC_Mongo_misc",
+	"properties": {
+		"description": "ORIGEN · Colección misc (MongoDB Atlas): 0 o 1 documento por PID.",
+		"linkedServiceName": {
+			"referenceName": "LS_Mongo_Atlas",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "01_Origen"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "MongoDbAtlasCollection",
+		"schema": [],
+		"typeProperties": {
+			"collection": "misc"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

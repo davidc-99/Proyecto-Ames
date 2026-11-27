@@ -1,0 +1,30 @@
+{
+	"name": "DS_STG_Csv_AmesProperty",
+	"properties": {
+		"description": "STAGING · Copia en CSV de Archivo input/AmesProperty.csv (separador ;) con columnas sin espacios.",
+		"linkedServiceName": {
+			"referenceName": "LS_Blob_Ames",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "02_Staging"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "AmesPropertyData.csv",
+				"container": "sources"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

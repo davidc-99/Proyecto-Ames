@@ -1,0 +1,16 @@
+{
+	"name": "adf-ames-etlinmo-corregido",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true,
+			"isExplicitlySet": false
+		}
+	},
+	"location": "northcentralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ac53d75d-be81-47d0-ab19-1589a9339822",
+		"tenantId": "e994072b-523e-4bfe-86e2-442c5e10b244"
+	}
+}

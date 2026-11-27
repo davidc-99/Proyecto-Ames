@@ -1,0 +1,36 @@
+{
+	"name": "DS_SRC_Csv_AmesProperty",
+	"properties": {
+		"description": "ORIGEN · Archivo input/AmesProperty.csv (separador ;): 2.930 propiedades, 19 campos. Define el universo de PID.",
+		"linkedServiceName": {
+			"referenceName": "LS_Blob_Ames",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "01_Origen"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "AmesProperty.csv",
+				"folderPath": "input",
+				"container": "sources"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "PID;Lot Frontage;Lot Area;Street;Alley;Lot Shape;Land Contour;Utilities;Lot Config;Land Slope;Neighborhood;Condition 1;Condition 2;Bldg Type;House Style;Overall Qual;Overall Cond;Year Built;Year Remod/Add",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

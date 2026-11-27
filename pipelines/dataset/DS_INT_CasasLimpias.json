@@ -1,0 +1,31 @@
+{
+	"name": "DS_INT_CasasLimpias",
+	"properties": {
+		"description": "INTERMEDIO · clean/casas_limpias.csv: CSV de propiedades ya limpio (salida de DF_01).",
+		"linkedServiceName": {
+			"referenceName": "LS_Blob_Ames",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "03_Intermedios"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "casas_limpias.csv",
+				"folderPath": "clean",
+				"container": "sources"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

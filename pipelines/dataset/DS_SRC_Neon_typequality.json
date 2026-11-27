@@ -1,0 +1,42 @@
+{
+	"name": "DS_SRC_Neon_typequality",
+	"properties": {
+		"description": "ORIGEN · Catálogo public.typequality (Neon): id → código de calidad (Ex, Gd, TA, Fa, Po).",
+		"linkedServiceName": {
+			"referenceName": "LS_Neon_AmesDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "01_Origen"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "code",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "description",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "typequality"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

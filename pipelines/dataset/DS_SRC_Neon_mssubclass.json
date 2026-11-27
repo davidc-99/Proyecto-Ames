@@ -1,0 +1,36 @@
+{
+	"name": "DS_SRC_Neon_mssubclass",
+	"properties": {
+		"description": "ORIGEN · Catálogo public.mssubclass (Neon): descripción de MS SubClass. Solo de referencia; no se usa en la salida.",
+		"linkedServiceName": {
+			"referenceName": "LS_Neon_AmesDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "01_Origen"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "description",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "code",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "mssubclass"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

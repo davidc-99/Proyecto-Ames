@@ -1,0 +1,126 @@
+{
+	"name": "PL_01_Copia_Neon_saleproperty",
+	"properties": {
+		"description": "EXTRACCIÓN · Copia saleproperty a su archivo de staging en Blob Storage.",
+		"activities": [
+			{
+				"name": "CP_Neon_saleproperty",
+				"description": "EXTRACCIÓN · Copia saleproperty a su archivo de staging en Blob Storage.",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"partitionOption": "None",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "pid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "PID",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Sale Date",
+									"type": "DateTime",
+									"physicalType": "timestamp without time zone"
+								},
+								"sink": {
+									"name": "SaleDate",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Sale Type",
+									"type": "String",
+									"physicalType": "character varying"
+								},
+								"sink": {
+									"name": "SaleType",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Sale Condition",
+									"type": "String",
+									"physicalType": "character varying"
+								},
+								"sink": {
+									"name": "SaleCondition",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "saleprice",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "salePrice",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_SRC_Neon_saleproperty",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_STG_Neon_saleproperty",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

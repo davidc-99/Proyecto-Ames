@@ -1,0 +1,41 @@
+{
+	"name": "PL_02_Limpieza_Csv",
+	"properties": {
+		"description": "TRANSFORMACIÓN · Ejecuta DF_01_Limpieza_Csv.",
+		"activities": [
+			{
+				"name": "EJ_DF_01_Limpieza_Csv",
+				"description": "Ejecuta el flujo de datos DF_01_Limpieza_Csv.",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_01_Limpieza_Csv",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

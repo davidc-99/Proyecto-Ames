@@ -1,0 +1,66 @@
+{
+	"name": "PL_03_Mongo_y_Neon",
+	"properties": {
+		"description": "TRANSFORMACIÓN · Ejecuta en paralelo DF_02_Integracion_Mongo y DF_03_Transformacion_Neon (requiere que PL_02 haya terminado).",
+		"activities": [
+			{
+				"name": "EJ_DF_02_Integracion_Mongo",
+				"description": "Ejecuta el flujo de datos DF_02_Integracion_Mongo.",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_02_Integracion_Mongo",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "EJ_DF_03_Transformacion_Neon",
+				"description": "Ejecuta el flujo de datos DF_03_Transformacion_Neon.",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_03_Transformacion_Neon",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

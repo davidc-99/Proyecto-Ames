@@ -1,0 +1,30 @@
+{
+	"name": "DS_OUT_Salida",
+	"properties": {
+		"description": "SALIDA · output/salida.csv: 2.930 filas × 81 columnas en camelCase, separador ; (salida de DF_04).",
+		"linkedServiceName": {
+			"referenceName": "LS_Blob_Ames",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "04_Salida"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "sources"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

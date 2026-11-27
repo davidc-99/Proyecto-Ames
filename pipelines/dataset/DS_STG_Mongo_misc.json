@@ -1,0 +1,31 @@
+{
+	"name": "DS_STG_Mongo_misc",
+	"properties": {
+		"description": "STAGING · Copia en CSV de Colección misc (MongoDB Atlas) con columnas sin espacios.",
+		"linkedServiceName": {
+			"referenceName": "LS_Blob_Ames",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "02_Staging"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "miscdata.csv",
+				"folderPath": "mongo",
+				"container": "sources"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

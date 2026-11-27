@@ -1,0 +1,335 @@
+{
+	"name": "PL_00_ETL_Ames_Maestro",
+	"properties": {
+		"description": "MAESTRO · Ejecuta todo el ETL en orden: 11 copias en paralelo → PL_02 → PL_03 → PL_04. Es la canalización que hay que ejecutar.",
+		"activities": [
+			{
+				"name": "EJ_PL_01_Copia_Csv_AmesProperty",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Csv_AmesProperty",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Neon_amesdbtemp",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Neon_amesdbtemp",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Neon_floordetail",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Neon_floordetail",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Neon_saleproperty",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Neon_saleproperty",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Neon_typequality",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Neon_typequality",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Neon_mszoning",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Neon_mszoning",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Neon_mssubclass",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Neon_mssubclass",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Mongo_garage",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Mongo_garage",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Mongo_bsmt",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Mongo_bsmt",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Mongo_pool",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Mongo_pool",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_01_Copia_Mongo_misc",
+				"description": "Extracción.",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_01_Copia_Mongo_misc",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_02_Limpieza_Csv",
+				"description": "Corre cuando las 11 copias terminaron bien.",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "EJ_PL_01_Copia_Csv_AmesProperty",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Neon_amesdbtemp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Neon_floordetail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Neon_saleproperty",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Neon_typequality",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Neon_mszoning",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Neon_mssubclass",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Mongo_garage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Mongo_bsmt",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Mongo_pool",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "EJ_PL_01_Copia_Mongo_misc",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_02_Limpieza_Csv",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_03_Mongo_y_Neon",
+				"description": "Después de la limpieza del CSV.",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "EJ_PL_02_Limpieza_Csv",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_03_Mongo_y_Neon",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EJ_PL_04_Union_Final",
+				"description": "Al final: produce salida.csv.",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "EJ_PL_03_Mongo_y_Neon",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_04_Union_Final",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

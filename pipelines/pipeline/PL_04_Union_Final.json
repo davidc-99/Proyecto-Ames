@@ -1,0 +1,41 @@
+{
+	"name": "PL_04_Union_Final",
+	"properties": {
+		"description": "TRANSFORMACIÓN y CARGA · Ejecuta DF_04_Union_Final, que produce output/salida.csv.",
+		"activities": [
+			{
+				"name": "EJ_DF_04_Union_Final",
+				"description": "Ejecuta el flujo de datos DF_04_Union_Final.",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_04_Union_Final",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "ETL_Ames"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"lastPublishTime": "2026-11-27T01:17:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

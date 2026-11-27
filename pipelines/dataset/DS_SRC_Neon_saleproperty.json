@@ -1,0 +1,54 @@
+{
+	"name": "DS_SRC_Neon_saleproperty",
+	"properties": {
+		"description": "ORIGEN · Tabla public.saleproperty (Neon): fecha, tipo, condición y precio de venta.",
+		"linkedServiceName": {
+			"referenceName": "LS_Neon_AmesDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "01_Origen"
+		},
+		"annotations": [
+			"proyecto-ames"
+		],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "pid",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Sale Date",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Sale Type",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Sale Condition",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "saleprice",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "saleproperty"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
