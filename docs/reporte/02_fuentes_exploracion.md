@@ -49,7 +49,6 @@ La Figura 1 muestra el caso que más interesa, `floordetail`, porque tiene varia
 
 ## 2.3 PostgreSQL en Neon (base `amesDB`)
 
-Según `sources/scriptAmesDB.sql`:
 
 | Tabla | Propósito | Llave | Cardinalidad respecto a PID | Observado | Aporte a la salida |
 |---|---|---|---|---:|---|
