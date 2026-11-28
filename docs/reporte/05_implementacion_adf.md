@@ -72,7 +72,7 @@ Los demás sinks usan la misma técnica para escribir un solo archivo cada uno.
 
 *Figura 7. ADF → Supervisar → Ejecuciones de canalización, 26/11/2026. Las 15 ejecuciones terminaron en estado Correcto; `PL_00_ETL_Ames_Maestro` duró 7 min 30 s.*
 
-**Tabla 3.** Ejecución del 26/11/2026 (hora de Bogotá).
+**Tabla 3.** Ejecución del 26/11/2026.
 
 | Pipeline | Inicio | Duración | Estado | Filas escritas |
 |---|---|---:|---|---:|
