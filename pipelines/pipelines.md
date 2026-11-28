@@ -48,8 +48,6 @@ Cada pipeline, actividad, dataset, data flow y paso interno tiene una descripci�
 ## Cómo desplegar y ejecutar
 
 1. **Opción A, desde Git:** en ADF Studio, ir a **Administrar → Configuración de Git** y seleccionar GitHub, el repositorio `Proyecto-Ames`, la rama `main` y la carpeta raíz `/pipelines/`. Luego **Publicar**.
-2. **Opción B, con la plantilla ARM:** en el portal de Azure, usar **Implementación personalizada → Cree su propia plantilla** y pegar `arm/ETLinmo_corregido_ARMTemplate.json`. Ingresar la región `northcentralus` y las tres cadenas de conexión, que son parámetros seguros.
+2. **Opción B, con la plantilla ARM:** en el portal de Azure, usar **Implementación personalizada → Cree su propia plantilla** y pegar `arm/ARMTemplate_ETL_Ames.json`. Ingresar la región `northcentralus` y las tres cadenas de conexión, que son parámetros seguros.
 3. Subir `AmesProperty.csv` a `sources/input/` y probar las conexiones en **Servicios vinculados**.
 4. Ejecutar `PL_00_ETL_Ames_Maestro` con **Agregar desencadenador → Desencadenar ahora** y seguirlo en **Supervisar**.
-
-El historial de correcciones está en [docs/CAMBIOS_ETLinmo_corregido.md](../docs/CAMBIOS_ETLinmo_corregido.md).
