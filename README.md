@@ -40,7 +40,7 @@ El objetivo fue construir y validar en Azure Data Factory un pipeline ETL que ex
 | `pipelines/` | Recursos de ADF sincronizados por la integración Git: `pipeline/`, `dataflow/`, `dataset/`, `linkedService/` y `factory/`. También están la plantilla ARM (`arm/`) y la [documentación del pipeline](pipelines/pipelines.md). |
 | `notebooks/` | Notebook de validación y su guía de uso. |
 | `out/` | [`salida.csv`](out/salida.csv) final y la [descripción de la salida](out/out.md). |
-| `docs/` | Guías del curso, [secciones del reporte](docs/reporte/) y [registro de cambios](docs/CAMBIOS_ETLinmo_corregido.md). |
+| `docs/` | Guías del curso y [secciones del reporte](docs/reporte/). |
 | `report.md` | Índice del reporte. |
 
 ## Entregables
@@ -49,11 +49,11 @@ El objetivo fue construir y validar en Azure Data Factory un pipeline ETL que ex
 - [Documentación del pipeline](pipelines/pipelines.md) y recursos de ADF en [`pipelines/`](pipelines/)
 - Archivo final [`out/salida.csv`](out/salida.csv) y su [descripción](out/out.md)
 - [Notebook de validación](notebooks/validar_salida_ames.ipynb) y [resultados de la validación](docs/reporte/06_validacion.md)
-- [Cambios y correcciones al pipeline](docs/CAMBIOS_ETLinmo_corregido.md)
+- Evidencias utilizadas en el reporte y la presentación: [conteos de extracción](docs/reporte/02_fuentes_exploracion.md), [ejecución en ADF](docs/reporte/05_implementacion_adf.md) y [validación de la salida](docs/reporte/06_validacion.md)
 
 ## Cómo ejecutar el pipeline
 
-1. Despliegue `pipelines/arm/ETLinmo_corregido_ARMTemplate.json` en Azure. Use «Implementación personalizada» con la región `northcentralus`, o conecte la factoría a este repositorio en la rama `main` con la carpeta raíz `/pipelines/`.
+1. Despliegue `pipelines/arm/ARMTemplate_ETL_Ames.json` en Azure. Use «Implementación personalizada» con la región `northcentralus`, o conecte la factoría a este repositorio en la rama `main` con la carpeta raíz `/pipelines/`.
 2. Cargue `AmesProperty.csv` en `sources/input/` de la cuenta de almacenamiento.
 3. En **Administrar → Servicios vinculados**, ingrese las credenciales de Neon y de MongoDB y use **Probar conexión**. Las credenciales no están en el repositorio.
 4. Ejecute `PL_00_ETL_Ames_Maestro` con **Agregar desencadenador → Desencadenar ahora** y siga la ejecución en **Supervisar**.

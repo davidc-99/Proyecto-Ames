@@ -31,7 +31,6 @@ El pipeline `PL_00_ETL_Ames_Maestro` extrae 11 objetos de tres tecnologías: 1 C
 
 ## Artefactos
 
-- Pipeline de ADF: [`pipelines/`](pipelines/), con su [documentación](pipelines/pipelines.md) y la [plantilla ARM](pipelines/arm/ETLinmo_corregido_ARMTemplate.json).
+- Pipeline de ADF: [`pipelines/`](pipelines/), con su [documentación](pipelines/pipelines.md) y la [plantilla ARM](pipelines/arm/ARMTemplate_ETL_Ames.json).
 - Salida final: [`out/salida.csv`](out/salida.csv), descrita en [out/out.md](out/out.md).
 - Notebook de validación: [`notebooks/validar_salida_ames.ipynb`](notebooks/validar_salida_ames.ipynb).
-- Registro de cambios al pipeline: [docs/CAMBIOS_ETLinmo_corregido.md](docs/CAMBIOS_ETLinmo_corregido.md), también en versión [Word](docs/Cambios_template_ETLinmo.docx).
