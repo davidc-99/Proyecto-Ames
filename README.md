@@ -36,7 +36,7 @@ El objetivo fue construir y validar en Azure Data Factory un pipeline ETL que ex
 
 | Ruta | Contenido |
 |---|---|
-| `sources/` | Fuentes originales del curso. No se modificaron. |
+| `sources/` | Fuentes originales del curso. |
 | `pipelines/` | Recursos de ADF sincronizados por la integración Git: `pipeline/`, `dataflow/`, `dataset/`, `linkedService/` y `factory/`. También están la plantilla ARM (`arm/`) y la [documentación del pipeline](pipelines/pipelines.md). |
 | `notebooks/` | Notebook de validación y su guía de uso. |
 | `out/` | [`salida.csv`](out/salida.csv) final y la [descripción de la salida](out/out.md). |
