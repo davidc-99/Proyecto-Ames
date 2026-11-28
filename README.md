@@ -53,7 +53,7 @@ El objetivo fue construir y validar en Azure Data Factory un pipeline ETL que ex
 
 ## Cómo ejecutar el pipeline
 
-1. Despliegue `pipelines/arm/ARMTemplate_ETL_Ames.json` en Azure. Use «Implementación personalizada» con la región `northcentralus`, o conecte la factoría a este repositorio en la rama `main` con la carpeta raíz `/pipelines/`.
+1. Despliegue `pipelines/arm/ARMTemplate_ETL_Ames.json` en Azure. Use «Implementación personalizada» con la región `northcentralus` o la que corresponda a su cuenta de Azure, o conecte la factoría a este repositorio en la rama `main` con la carpeta raíz `/pipelines/`.
 2. Cargue `AmesProperty.csv` en `sources/input/` de la cuenta de almacenamiento.
 3. En **Administrar → Servicios vinculados**, ingrese las credenciales de Neon y de MongoDB y use **Probar conexión**. Las credenciales no están en el repositorio.
 4. Ejecute `PL_00_ETL_Ames_Maestro` con **Agregar desencadenador → Desencadenar ahora** y siga la ejecución en **Supervisar**.
