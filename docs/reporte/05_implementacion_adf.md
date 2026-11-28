@@ -86,49 +86,31 @@ Casi todo el tiempo de `PL_02` y `PL_03` se va en el arranque del clúster de Sp
 
 ## 5.6 Problemas encontrados durante el desarrollo y cómo se resolvieron
 
-El pipeline se construyó en varias rondas. Después de cada cambio se validaba en ADF («Validar todo»), se ejecutaba y se revisaba la salida con el notebook. Cada problema encontrado llevó a una decisión que quedó en la versión final.
+El pipeline se construyó en varias rondas: después de cada cambio se ejecutaba en ADF y se revisaba la salida con el notebook. Varios de estos problemas no generaban ningún error: el pipeline terminaba en estado *Correcto*, pero la salida estaba mal. Solo se detectaron al validar.
 
-Algunos problemas detuvieron el despliegue o la ejecución con un error. Otros no generaron ningún error y solo se detectaron al validar la salida. Estos segundos eran los más riesgosos, porque el pipeline terminaba en estado *Correcto* aunque la salida estuviera mal.
-
-### Entorno y conexiones
+### Integración de las fuentes
 
 | Problema observado | Causa | Decisión | Resultado |
 |---|---|---|---|
-| La suscripción *Azure for Students* rechazó el despliegue en East US (`RequestDisallowedByAzure`) | Política de la suscripción que limita las regiones permitidas | Desplegar en `northcentralus` y dejar la región como parámetro de la plantilla ARM | Despliegue correcto; otra cuenta puede usar su propia región |
-| Al desplegar, ADF rechazó la conexión de MongoDB con el mensaje «The connection string is not valid» | El servicio vinculado valida el formato de la cadena aunque todavía no tenga la contraseña real | Usar en la plantilla un valor de ejemplo con formato `mongodb+srv://…` y escribir la credencial real después, en **Servicios vinculados** | Despliegue correcto, sin credenciales en la plantilla ni en el repositorio |
-| Las credenciales no podían quedar en el repositorio | La integración con GitHub versiona la definición de cada recurso | Cadenas de conexión como parámetros `secureString`. ADF guarda las contraseñas cifradas en Azure | El repositorio no contiene contraseñas |
+| Las uniones por `PID` no empataban bien | Cada fuente guarda el `PID` con un tipo distinto: texto en el CSV, número en Neon y `$numberLong` en MongoDB | Convertir el `PID` a texto en todas las fuentes antes de unir | 0 PID faltantes o adicionales |
+| Las columnas de la unión final no correspondían a su fuente | En `DF_04`, las fuentes de Neon y de MongoDB leían el archivo de la otra | Apuntar cada fuente a su propio archivo | 0 diferencias por PID |
+| Había pasos del data flow de Neon que no llegaban a ningún destino | Pisos y ventas se procesaban también en `DF_03`, sin usarse | Procesarlos solo en `DF_04`, donde se unen | Un flujo más claro y más corto |
 
-### Errores del conector y ajuste de tipos
-
-| Problema observado | Causa | Decisión | Resultado |
-|---|---|---|---|
-| Las copias desde MongoDB fallaban con `TypeConversionConnectorNotSupported` | El conector de MongoDB Atlas no admite la conversión de tipos dentro de la actividad de copia | Copiar sin conversión de tipos y hacer las conversiones en los data flows | Las 4 copias de MongoDB terminan en estado *Correcto* |
-| El `PID` llegaba con tipos distintos según la fuente: texto en el CSV, número en Neon y `$numberLong` en MongoDB | Cada plataforma guarda la llave a su manera | Normalizar el `PID` a texto antes de cada unión (`toString(toLong(PID))`). La fuente de Neon en la unión final se proyecta con `PID` como texto | Las uniones empatan; 0 PID faltantes o adicionales |
-| La conversión de `Sale Date` a fecha no era confiable para obtener `MoSold` y `YrSold` | `Sale Date` llega al staging como texto con hora (`2010-05-23 00:00:00`) | Tomar los primeros 10 caracteres antes de convertir a fecha, con un segundo formato de respaldo | 0 diferencias en mes y año |
-
-### Particiones y archivos
+### Transformaciones
 
 | Problema observado | Causa | Decisión | Resultado |
 |---|---|---|---|
-| Cada data flow escribía varios archivos `part-*.csv` en vez de uno | Spark divide la salida en particiones por defecto | Configurar en cada sink una sola partición (`partitionBy('hash', 1)`) con nombre de archivo fijo (`partitionFileNames`) | Un archivo por paso: `casas_limpias.csv`, `MONGO1.csv`, `neon1.csv` y `salida.csv` |
-| El flujo siguiente leía la carpeta `clean/` completa y podía mezclar archivos de otros pasos | El dataset intermedio apuntaba a la carpeta y no a un archivo | Apuntar cada dataset intermedio a su archivo exacto | Cada flujo lee solo lo que le corresponde; 2.930 filas en cada sink |
-| «Validar todo» marcaba que el sink de salida no tenía esquema | El dataset de salida no define columnas fijas | Activar «Permitir el desfase de esquema» (`allowSchemaDrift`) en el sink | Validación sin errores |
+| Solo 3 de los 81 encabezados coincidían con lo pedido | La salida conservaba los nombres internos de las columnas | Agregar un paso final que renombra y ordena las 81 columnas en camelCase | 81 / 81 encabezados correctos |
+| `Central Air` quedaba siempre en `N` | Se convertía dos veces | Dejar una sola conversión, en `DF_03` | Valores `Y` / `N` correctos |
+| Algunos faltantes no se rellenaban con `NA` / `0` | La lista de columnas usaba nombres que ya no existían en ese punto del flujo | Corregir los nombres de la lista | 0 celdas vacías en la salida |
+| El mes y el año de venta no salían bien | `Sale Date` llega con hora (`2010-05-23 00:00:00`) | Tomar solo la parte de la fecha antes de extraer el mes y el año | 0 diferencias en mes y año |
 
-### Lógica de las transformaciones (detectados al validar la salida)
-
-| Problema observado | Causa | Decisión | Resultado |
-|---|---|---|---|
-| Solo 3 de los 81 encabezados coincidían con lo pedido | La salida conservaba los nombres internos de las columnas | Agregar el paso final `selEsquemaSalida`, que renombra y ordena las 81 columnas en camelCase | 81 / 81 encabezados correctos |
-| Las columnas de la unión final no correspondían a su fuente | Las fuentes de Neon y MongoDB de `DF_04` estaban apuntando al dataset de la otra | Apuntar cada fuente al dataset de su propio esquema | 0 diferencias por PID |
-| `Central Air` quedaba siempre en `N` | Se convertía dos veces: el valor `Y` volvía a compararse contra `'true'` | Dejar una sola conversión, en `DF_03` | Valores `Y` / `N` correctos |
-| Algunos faltantes no se rellenaban con `NA` / `0` | La lista de columnas usaba nombres con espacio (`Central Air`) que ya no existían en ese punto del flujo | Corregir los nombres de la lista | 0 celdas vacías en la salida |
-| Había ramas del data flow de Neon que no llegaban a ningún destino | Pisos y ventas también se procesaban en `DF_03` sin usarse | Eliminar esas ramas y procesar pisos y ventas solo en `DF_04`, donde se unen | Menos tiempo de clúster y un flujo más claro |
-
-### Orquestación y mantenimiento
+### Archivos de salida y orden de ejecución
 
 | Problema observado | Causa | Decisión | Resultado |
 |---|---|---|---|
-| Había que ejecutar los pipelines uno por uno, y nada garantizaba el orden | No existía un pipeline que los encadenara | Crear `PL_00_ETL_Ames_Maestro` con dependencias *Succeeded* | Todo el ETL corre con un clic y en orden (7 min 30 s) |
-| Era difícil entender qué hacía cada recurso al revisar la factoría | Nombres genéricos y sin descripciones | Adoptar prefijos (`LS_`, `DS_SRC_`/`STG_`/`INT_`/`OUT_`, `PL_0n`, `DF_0n`, `src`/`drv`/`agg`/`lkp`/`join`/`sel`/`snk`), agregar una descripción a cada paso y eliminar recursos sin uso | Factoría autodocumentada; ver las Figuras 5 y 6 |
+| Cada data flow escribía varios archivos `part-*.csv` en vez de uno | ADF divide la salida en partes por defecto | Configurar cada destino para escribir un solo archivo con nombre fijo | Un único `salida.csv` |
+| Un data flow leía la carpeta completa y podía mezclar archivos de otros pasos | El dataset apuntaba a la carpeta y no al archivo | Apuntar cada dataset a su archivo exacto | 2.930 filas en cada paso |
+| Había que ejecutar los pipelines uno por uno, y nada garantizaba el orden | No existía un pipeline que los encadenara | Crear `PL_00_ETL_Ames_Maestro` | Todo el ETL corre con un clic y en orden |
 
-Todos estos problemas se resolvieron durante el desarrollo, antes de la ejecución final del 26/11/2026.
+Todos se resolvieron durante el desarrollo, antes de la ejecución final del 26/11/2026.
