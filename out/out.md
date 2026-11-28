@@ -1,6 +1,6 @@
 # Salida final: `salida.csv`
 
-[`salida.csv`](salida.csv) es el producto del ETL. Lo genera el sink `snkSalida` de `DF_04_Union_Final`, en la ejecución de `PL_00_ETL_Ames_Maestro` del 26/11/2026 (factoría `adf-ames-etlinmo-corregido`). En Azure se escribe en `sources/output/salida.csv`, y aquí está la misma versión, sin modificar.
+[`salida.csv`](salida.csv) es el producto del ETL. Lo genera el sink `snkSalida` de `DF_04_Union_Final`, en la ejecución de `PL_00_ETL_Ames_Maestro` del 26/11/2026. En Azure se escribe en `sources/output/salida.csv`, y aquí está la misma versión, sin modificar.
 
 | Característica | Valor |
 |---|---|
