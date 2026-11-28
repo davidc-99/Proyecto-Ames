@@ -36,5 +36,4 @@ Las tres cadenas de conexión se ingresan al desplegar o en **Administrar → Se
 
 ## 8.4 Verificaciones no ejecutadas
 
-- No se compararon los datos cargados en Neon y Mongo contra los scripts de `sources/` más allá de los conteos. Los conteos de la Tabla 1 coinciden con los de los scripts y el notebook valida la salida contra esos scripts.
 - `MS SubClass` se conserva como código numérico; no se tradujo con el catálogo `mssubclass`. No es una transformación pedida, así que no se validó la traducción.

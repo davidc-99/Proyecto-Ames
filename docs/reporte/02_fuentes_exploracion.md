@@ -4,9 +4,14 @@
 
 Las cifras de **referencia** son las del enunciado. Las cifras **observadas** provienen de:
 
+- **el análisis exploratorio del equipo en cada plataforma**, hecho antes de construir el pipeline:
+  - el CSV, con Python en Google Colab;
+  - las tablas de PostgreSQL, en la consola SQL de Neon;
+  - las colecciones, en MongoDB Compass.
+
+  Ahí se revisaron la estructura, las llaves, los tipos, los faltantes y las cardinalidades;
 - **el monitor de ADF:** filas leídas y escritas por cada actividad de copia en la ejecución del 26/11/2026;
-- **el notebook de validación:** cardinalidad de las colecciones de MongoDB y cobertura de `PID` ([sección 6](06_validacion.md));
-- **el script de la base** (`sources/scriptAmesDB.sql`): estructura, llaves y tipos de las tablas de PostgreSQL.
+- **el notebook de validación:** cardinalidad de las colecciones de MongoDB y cobertura de `PID` ([sección 6](06_validacion.md)).
 
 ## 2.1 Extracción: qué se copió y cuánto
 
@@ -40,6 +45,8 @@ La Figura 1 muestra el caso que más interesa, `floordetail`, porque tiene varia
 
 ## 2.2 Archivo AmesProperty.csv
 
+Revisado en Google Colab con Python durante el análisis exploratorio.
+
 - **Ubicación en el pipeline:** `sources/input/AmesProperty.csv`, a través del dataset `DS_SRC_Csv_AmesProperty`.
 - **Formato observado:** separador `;`, con encabezado, texto ASCII y fin de línea CRLF.
 - **Tamaño:** 2.930 filas × 19 columnas, igual que la referencia.
@@ -49,6 +56,7 @@ La Figura 1 muestra el caso que más interesa, `floordetail`, porque tiene varia
 
 ## 2.3 PostgreSQL en Neon (base `amesDB`)
 
+Estructura, llaves y tipos revisados en la consola SQL de Neon durante el análisis exploratorio.
 
 | Tabla | Propósito | Llave | Cardinalidad respecto a PID | Observado | Aporte a la salida |
 |---|---|---|---|---:|---|
@@ -62,12 +70,14 @@ La Figura 1 muestra el caso que más interesa, `floordetail`, porque tiene varia
 **Hallazgos que cambiaron el diseño:**
 
 1. **`floordetail` es 1:N.** Su llave es (`pid`, `Floor`) y tiene 4.182 filas para 2.930 casas. Si se une sin agregar primero, las casas con más de un piso aparecerían repetidas (4.182 filas en lugar de 2.930). Por eso se agrega por `PID` **antes** de unir.
-2. Las cuatro calidades y `MS Zoning` vienen como **identificadores numéricos** (`bigint` en el script): por ejemplo `Exter Qual = 3` significa `TA`. Hay que traducirlos con los catálogos.
-3. `Central Air` es **booleano** en el script. La salida usa `Y` / `N`.
+2. Las cuatro calidades y `MS Zoning` vienen como **identificadores numéricos** (`bigint` en Neon): por ejemplo `Exter Qual = 3` significa `TA`. Hay que traducirlos con los catálogos.
+3. `Central Air` es **booleano** en Neon. La salida usa `Y` / `N`.
 4. `Sale Date` es **timestamp**, por ejemplo `2010-05-23 00:00:00`. Solo se necesitan el mes y el año.
-5. El enunciado indica 35 columnas para `amesdbtemp`, pero el script define **32**. Las 32 cubren todos los campos que la salida necesita de esa tabla.
+5. El enunciado indica 35 columnas para `amesdbtemp`, pero la tabla en Neon tiene **32**. Las 32 cubren todos los campos que la salida necesita de esa tabla.
 
 ## 2.4 MongoDB Atlas (base `test`)
+
+La estructura de los documentos se revisó en MongoDB Compass durante el análisis exploratorio.
 
 | Colección | Documentos (ref. / observado en ADF) | PID duplicados o ausentes (notebook) | Cobertura del universo | Casas sin documento |
 |---|---:|---:|---:|---:|
