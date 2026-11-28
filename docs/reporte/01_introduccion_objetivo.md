@@ -10,7 +10,7 @@ La información de las 2.930 propiedades del conjunto Ames está repartida en tr
 - **Base relacional PostgreSQL en Neon** (`amesdb`): detalle constructivo, venta, detalle por piso y catálogos de códigos.
 - **Base documental MongoDB Atlas** (base `test`): garaje, sótano, piscina y otras características. Solo hay documentos para las propiedades que tienen ese elemento.
 
-Para analizar las propiedades hace falta una sola tabla plana con una fila por propiedad. Por eso no basta con copiar los datos: hay que integrarlos por `PID` respetando la cardinalidad de cada fuente. Algunas fuentes tienen varias filas por casa y otras no cubren todas las casas. Además hay que aplicar las reglas de negocio del enunciado.
+Para analizar las propiedades hace falta una sola tabla plana con una fila por propiedad. Por eso no basta con copiar los datos: hay que integrarlos por `PID` respetando la cardinalidad de cada fuente. Algunas fuentes tienen varias filas por casa y otras no cubren todas las casas. Además hay que aplicar las reglas de negocio indicadas.
 
 ## Objetivo
 
