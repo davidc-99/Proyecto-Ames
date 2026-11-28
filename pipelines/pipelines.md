@@ -1,6 +1,6 @@
 # Pipeline de ADF – Proyecto Ames
 
-Esta carpeta es la **carpeta raíz de la integración Git** de la factoría `adf-ames-etlinmo-corregido`, con la rama de colaboración `main` y la rama de publicación `adf_publish`. ADF genera y actualiza los JSON de las subcarpetas, así que no deben editarse a mano.
+Esta carpeta es la **carpeta raíz de la integración Git** de la factoría `adf-ames-etlinmo-corregido`, con la rama de colaboración `main` y la rama de publicación `adf_publish`. ADF genera y actualiza los JSON de las subcarpetas.
 
 | Carpeta | Contenido |
 |---|---|
