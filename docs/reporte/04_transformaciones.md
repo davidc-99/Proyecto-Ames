@@ -2,7 +2,7 @@
 
 [← Volver al índice](../../report.md)
 
-Después de la extracción, los datos están copiados tal cual en Blob Storage, pero todavía no sirven como salida. Hay campos que no existen en ninguna fuente y hay que calcularlos, como el área habitable o el total de baños. Otros vienen como códigos que hay que traducir, otros traen vacíos que el enunciado pide reemplazar, y cada fuente usa su propio formato. Esta sección explica cada una de esas reglas:
+Después de la extracción, los datos están copiados tal cual en Blob Storage, pero todavía no sirven como salida. Hay campos que no existen en ninguna fuente y hay que calcularlos, como el área habitable o el total de baños. Otros vienen como códigos que hay que traducir, otros traen vacíos que hay que reemplazar, y cada fuente usa su propio formato. Esta sección explica cada una de esas reglas:
 
 - **qué pide** el enunciado;
 - **por qué** hace falta;
