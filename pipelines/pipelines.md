@@ -7,9 +7,9 @@ Esta carpeta es la **carpeta raíz de la integración Git** de la factoría `adf
 | [`pipeline/`](pipeline/) | 15 pipelines: `PL_00` maestro, 11 `PL_01_Copia_*`, `PL_02`, `PL_03` y `PL_04` |
 | [`dataflow/`](dataflow/) | 4 Mapping Data Flows, del `DF_01` al `DF_04` |
 | [`dataset/`](dataset/) | 26 datasets: `DS_SRC_` (origen), `DS_STG_` (staging), `DS_INT_` (intermedios) y `DS_OUT_` (salida) |
-| [`linkedService/`](linkedService/) | 3 conexiones: `LS_Blob_Ames`, `LS_Neon_AmesDB` y `LS_Mongo_Atlas`. ADF guarda las contraseñas cifradas en Azure y no las versiona |
+| [`linkedService/`](linkedService/) | 3 conexiones: `LS_Blob_Ames`, `LS_Neon_AmesDB` y `LS_Mongo_Atlas`. ADF guarda las contraseñas cifradas en Azure |
 | [`factory/`](factory/) | Definición de la factoría |
-| [`arm/`](arm/) | Plantilla ARM para desplegar la factoría completa en otra suscripción |
+| [`arm/`](arm/) | Plantilla ARM para desplegar la factoría completa |
 
 ## Arquitectura
 
