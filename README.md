@@ -69,7 +69,7 @@ El objetivo fue construir y validar en Azure Data Factory un pipeline ETL que ex
 
 ## Seguridad
 
-El repositorio no contiene contraseñas, tokens ni cadenas de conexión. Los servicios vinculados de ADF guardan las credenciales cifradas en Azure, y la plantilla ARM las recibe como parámetros `secureString`.
+El repositorio no contiene contraseñas, tokens ni claves. Los servicios vinculados que ADF guarda en `pipelines/linkedService/` solo conservan el servidor y el usuario; la contraseña queda cifrada en Azure y no se exporta. La plantilla ARM recibe las cadenas de conexión como parámetros `secureString`, con valores de ejemplo.
 
 ## Licencia
 
