@@ -35,9 +35,9 @@ PL_00_ETL_Ames_Maestro
 
 Las dependencias usan la condición **Succeeded**. Si una copia falla, los data flows no corren con datos incompletos. La Figura 5 muestra el pipeline en ADF: las 11 copias a la izquierda convergen en `PL_02`, y de ahí la cadena sigue a `PL_03` y `PL_04`.
 
-![Figura 5. Canvas de PL_00_ETL_Ames_Maestro](img/fig5_pl00_maestro.png)
+![Figura 5. Captura de pantalla de PL_00_ETL_Ames_Maestro](img/fig5_pl00_maestro.png)
 
-*Figura 5. Canvas de `PL_00_ETL_Ames_Maestro` en ADF Studio: 11 actividades Execute Pipeline de copia en paralelo y, en secuencia, `PL_02_Limpieza_Csv` → `PL_03_Mongo_y_Neon` → `PL_04_Union_Final`.*
+*Figura 5. Captura de pantalla de `PL_00_ETL_Ames_Maestro` en ADF Studio: 11 actividades Execute Pipeline de copia en paralelo y, en secuencia, `PL_02_Limpieza_Csv` → `PL_03_Mongo_y_Neon` → `PL_04_Union_Final`.*
 
 ## 5.4 Data flows
 
@@ -50,9 +50,9 @@ Las dependencias usan la condición **Succeeded**. Si una copia falla, los data 
 
 La Figura 6 muestra `DF_04_Union_Final`, el data flow que produce la salida. La fila superior es la cadena principal: tres LEFT JOIN por `PID`, la regla NA / 0, la selección de las 81 columnas y el sink. Debajo están las fuentes que se preparan antes de unirse: Neon, ventas (mes y año) y pisos (agregados por `PID`).
 
-![Figura 6. Canvas de DF_04_Union_Final](img/fig6_df04_union_final.png)
+![Figura 6. Captura de pantalla de DF_04_Union_Final](img/fig6_df04_union_final.png)
 
-*Figura 6. Canvas de `DF_04_Union_Final` en ADF Studio. Cada paso muestra su descripción. Los que aplican una regla del enunciado empiezan con «REGLA:».*
+*Figura 6. Captura de pantalla de `DF_04_Union_Final` en ADF Studio. Cada paso muestra su descripción. Los que aplican una regla del enunciado empiezan con «REGLA:».*
 
 **Configuración del sink final (`snkSalida`):**
 
