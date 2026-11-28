@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Curso** | Ingeniería de Datos I · Unidad 4 · Maestría en Ciencia de Datos, Universidad Icesi |
+| **Curso** | Ingeniería de Datos I · Maestría en Ciencia de Datos, Universidad Icesi |
 | **Proyecto** | ETL Ames: integración de CSV, PostgreSQL (Neon) y MongoDB Atlas en Azure Data Factory |
 | **Integrantes** | Sebastián Pérez ([@tianp98](https://github.com/tianp98)) · David Ortigoza ([@DROM9406](https://github.com/DROM9406)) · David Esteban Castro ([@davidc-99](https://github.com/davidc-99)) · María Isabel Collazos ([@Mariaisabel18cg](https://github.com/Mariaisabel18cg)) · Gina Marcela Huertas ([@gmhuertass](https://github.com/gmhuertass)) |
 | **Fecha** | Noviembre de 2026 |
