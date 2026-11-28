@@ -14,6 +14,7 @@ El equipo construyó en **Azure Data Factory (ADF)** un proceso ETL que integra 
 | David Ortigoza | [@DROM9406](https://github.com/DROM9406) |
 | David Esteban Castro | [@davidc-99](https://github.com/davidc-99) |
 | María Isabel Collazos | [@Mariaisabel18cg](https://github.com/Mariaisabel18cg) |
+| Gina Marcela Huertas | [@gmhuertass](https://github.com/gmhuertass) |
 
 ## Objetivo
 
