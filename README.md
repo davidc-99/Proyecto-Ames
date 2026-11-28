@@ -34,14 +34,15 @@ El objetivo fue construir y validar en Azure Data Factory un pipeline ETL que ex
 
 ## Estructura del repositorio
 
-| Ruta | Contenido |
+| Ruta | Contenido esperado |
 |---|---|
-| `sources/` | Fuentes originales del curso. |
-| `pipelines/` | Recursos de ADF sincronizados por la integración Git: `pipeline/`, `dataflow/`, `dataset/`, `linkedService/` y `factory/`. También están la plantilla ARM (`arm/`) y la [documentación del pipeline](pipelines/pipelines.md). |
-| `notebooks/` | Notebook de validación y su guía de uso. |
-| `out/` | [`salida.csv`](out/salida.csv) final y la [descripción de la salida](out/out.md). |
-| `docs/` | Guías del curso y [secciones del reporte](docs/reporte/). |
-| `report.md` | Índice del reporte. |
+| `sources/` | Fuentes originales, colecciones y scripts entregados |
+| `pipelines/` | Exportaciones y documentación del pipeline de ADF |
+| `notebooks/` | Notebook de validación y guía de uso |
+| `out/` | `salida.csv` y descripción de la salida final |
+| `docs/` | Guías para el reporte, la presentación y el uso del repositorio |
+| `report.md` | Reporte del proyecto |
+| `README.md` | Presentación general y acceso a los entregables |
 
 ## Entregables
 
