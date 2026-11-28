@@ -102,7 +102,8 @@ El pipeline se construyó en varias rondas: después de cada cambio se ejecutaba
 |---|---|---|---|
 | Solo 3 de los 81 encabezados coincidían con lo pedido | La salida conservaba los nombres internos de las columnas | Agregar un paso final que renombra y ordena las 81 columnas en camelCase | 81 / 81 encabezados correctos |
 | `Central Air` quedaba siempre en `N` | Se convertía dos veces | Dejar una sola conversión, en `DF_03` | Valores `Y` / `N` correctos |
-| Algunos faltantes no se rellenaban con `NA` / `0` | La lista de columnas usaba nombres que ya no existían en ese punto del flujo | Corregir los nombres de la lista | 0 celdas vacías en la salida |
+| Algunos faltantes no se rellenaban con `NA` / `0` | Un error tipográfico en la lista de variables: escribimos `Central Air` con espacio, pero la columna ya se llamaba `CentralAir`. ADF no avisa cuando un nombre no existe; simplemente no aplica la regla | Corregir el nombre en la lista | 0 celdas vacías en la salida |
+| La columna `Electrical` viaja con el nombre `lectrical` | Error tipográfico al mapear la copia de Neon (`PL_01_Copia_Neon_amesdbtemp`). Desde ahí, `DF_03` y `DF_04` usan `lectrical` de forma coherente, y el renombrado final la entrega como `electrical` | Dejar el nombre interno `lectrical`. Al cambiarlo solo en la regla de faltantes, la regla dejó de aplicarse y apareció una celda vacía. Corregirlo bien exige cambiar la copia y los dos data flows a la vez | La salida usa `electrical` y tiene 0 celdas vacías |
 | El mes y el año de venta no salían bien | `Sale Date` llega con hora (`2010-05-23 00:00:00`) | Tomar solo la parte de la fecha antes de extraer el mes y el año | 0 diferencias en mes y año |
 
 ### Archivos de salida y orden de ejecución

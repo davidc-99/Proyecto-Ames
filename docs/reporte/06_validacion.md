@@ -70,7 +70,7 @@ El notebook se usó durante todo el desarrollo, no solo al final. En las primera
 - la salida partida en varios archivos `part-*.csv`;
 - fuentes de Neon y Mongo cruzadas en la unión final;
 - `Central Air` convertido dos veces;
-- faltantes que no se rellenaban porque la lista usaba nombres de columna que ya no existían;
+- faltantes que no se rellenaban por errores tipográficos en los nombres de las variables: `Central Air` con espacio en la lista de la regla, y el nombre interno `lectrical`, que solo funciona si se usa igual en todo el flujo;
 - mes y año calculados sobre una fecha con hora.
 
 Cada hallazgo se resolvió en el pipeline (ver la [sección 5.6](05_implementacion_adf.md)). Después se volvió a ejecutar el pipeline completo y se validó de nuevo, hasta llegar al resultado final: 28/28.

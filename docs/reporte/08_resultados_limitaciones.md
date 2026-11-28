@@ -30,7 +30,7 @@ Las tres cadenas de conexión se ingresan al desplegar o en **Administrar → Se
 ## 8.3 Limitaciones conocidas
 
 1. **`Lot Frontage` imputado:** las casas sin frente toman el promedio de su barrio. Es una decisión del equipo que agrega un valor estimado y no la evalúa el notebook. Además, la columna sale con decimal, por ejemplo `60.0`.
-2. **Lista preventiva de faltantes en `DF_04`:** el nombre `Electrical` aparece como `lectrical`, de modo que esa columna no recibe la regla `NA` preventiva. No afectó la salida, porque `electrical` no quedó vacío en ninguna fila: se validó que no hay celdas vacías. Conviene corregirlo en una siguiente versión.
+2. **Nombre interno `lectrical`:** por un error tipográfico en el mapeo de la copia de Neon, la columna `Electrical` viaja como `lectrical` por `DF_03` y `DF_04`. No afecta la salida: se usa con el mismo nombre en todo el flujo, incluida la regla `NA`, y el paso final la renombra a `electrical`. Lo dejamos así a propósito porque, si se corrige en un solo punto, la regla de faltantes deja de aplicarse (lo comprobamos: apareció una celda vacía y el notebook bajó a 26/28). Corregirlo exige cambiar la copia, `DF_03` y `DF_04` a la vez y volver a validar.
 3. **Costo y tiempo:** cada data flow arranca un clúster de Spark (≈2 min). Para 2.930 filas, la mayor parte del tiempo es arranque, no procesamiento.
 4. **Credenciales:** quien despliegue la plantilla necesita acceso a Neon y MongoDB Atlas. Las credenciales se comparten de forma privada en el equipo y no se versionan.
 
