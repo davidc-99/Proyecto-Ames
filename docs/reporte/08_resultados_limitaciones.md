@@ -22,7 +22,7 @@
 **Parámetros no sensibles** de la plantilla ARM:
 
 - `factoryName`: `adf-ames-etlinmo-corregido`;
-- `location`: `northcentralus`;
+- `location`: `northcentralus`, la región usada en este proyecto; quien la despliegue debe usar la región permitida en su propia suscripción de Azure;
 - `LS_Mongo_Atlas_database`: `test`.
 
 Las tres cadenas de conexión se ingresan al desplegar o en **Administrar → Servicios vinculados**. No dependen de rutas personales.
