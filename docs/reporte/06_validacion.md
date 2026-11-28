@@ -4,14 +4,13 @@
 
 ## 6.1 Estrategia
 
-La salida se validó en tres niveles:
+La salida se validó en dos niveles:
 
 1. **Durante la ejecución:** se revisaron las filas leídas y escritas por cada copia y por cada sink en el monitor de ADF ([Tabla 1](02_fuentes_exploracion.md) y [Tabla 3](05_implementacion_adf.md)).
 2. **Con el notebook del curso** [`validar_salida_ames.ipynb`](../../notebooks/validar_salida_ames.ipynb):
    - `NAMING_STYLE = "camelCase"`;
    - lee `out/salida.csv` y compara contra las fuentes de `sources/` (CSV, scripts SQL y colecciones JSON);
    - revisa **por fila y por PID**, no solo totales.
-3. **Revisión manual** de distribuciones (por ejemplo `centralAir`, `MSZoning` y los códigos de calidad) y de casos borde: casas sin garaje, documentos incompletos y casas de dos pisos.
 
 ## 6.2 Resultado
 
@@ -59,7 +58,7 @@ La salida se validó en tres niveles:
 
 - **Dimensiones y PID:** hay 2.930 filas, una por propiedad, sin duplicados y con la misma cobertura que el CSV base. Esto confirma que ninguna unión eliminó ni multiplicó propiedades ([sección 3.4](03_diseno_integracion.md)).
 - **Esquema:** los 81 encabezados están en camelCase y en el orden del enunciado, sin espacios, con `PID`, `MS` y `QC` en mayúscula.
-- **Faltantes:** no hay celdas vacías. Solo aparecen `NA` en los campos cualitativos y valores numéricos (incluido `0`) en los numéricos. En total hay 13.315 celdas con `NA`, y la mayoría corresponde a casas sin piscina (`poolQC`: 2.917) o sin `misc` (`miscFeature`: 2.824).
+- **Faltantes:** no hay celdas vacías. Solo aparecen `NA` en los campos cualitativos y valores numéricos (incluido `0`) en los numéricos. La mayoría de los `NA` corresponde a casas sin documento de piscina o de `misc`, que son casi todas.
 - **Transformaciones obligatorias:** las cuatro reglas (Gr Liv Area, FloorDetail, mes y año, Year Remod/Add) tienen **0 diferencias** por fila o por PID contra la fuente.
 - **MongoDB:** los valores coinciden campo a campo en las cuatro colecciones. Esto confirma que el `NA` / `0` se aplicó solo donde faltaba el documento o el campo.
 

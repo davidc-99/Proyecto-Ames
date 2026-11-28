@@ -29,11 +29,10 @@ Las tres cadenas de conexión se ingresan al desplegar o en **Administrar → Se
 
 ## 8.3 Limitaciones conocidas
 
-1. **`Lot Frontage` imputado:** las 490 casas sin frente toman el promedio de su barrio. Es una decisión del equipo que agrega un valor estimado y no la evalúa el notebook. Además, la columna sale con decimal, por ejemplo `60.0`.
-2. **Anomalías de la fuente que se conservaron:** `Garage Yr Blt = 2207` (PID 916384070) y casos con `Mas Vnr Type = None` pero área mayor que 0. Se dejaron como están porque la validación compara contra la fuente, y corregirlos sería inventar datos.
-3. **Lista preventiva de faltantes en `DF_04`:** el nombre `Electrical` aparece como `lectrical`, de modo que esa columna no recibe la regla `NA` preventiva. No afectó la salida, porque `electrical` no quedó vacío en ninguna fila: se validó que no hay celdas vacías. Conviene corregirlo en una siguiente versión.
-4. **Costo y tiempo:** cada data flow arranca un clúster de Spark (≈2 min). Para 2.930 filas, la mayor parte del tiempo es arranque, no procesamiento.
-5. **Credenciales:** quien despliegue la plantilla necesita acceso a Neon y MongoDB Atlas. Las credenciales se comparten de forma privada en el equipo y no se versionan.
+1. **`Lot Frontage` imputado:** las casas sin frente toman el promedio de su barrio. Es una decisión del equipo que agrega un valor estimado y no la evalúa el notebook. Además, la columna sale con decimal, por ejemplo `60.0`.
+2. **Lista preventiva de faltantes en `DF_04`:** el nombre `Electrical` aparece como `lectrical`, de modo que esa columna no recibe la regla `NA` preventiva. No afectó la salida, porque `electrical` no quedó vacío en ninguna fila: se validó que no hay celdas vacías. Conviene corregirlo en una siguiente versión.
+3. **Costo y tiempo:** cada data flow arranca un clúster de Spark (≈2 min). Para 2.930 filas, la mayor parte del tiempo es arranque, no procesamiento.
+4. **Credenciales:** quien despliegue la plantilla necesita acceso a Neon y MongoDB Atlas. Las credenciales se comparten de forma privada en el equipo y no se versionan.
 
 ## 8.4 Verificaciones no ejecutadas
 

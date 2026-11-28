@@ -7,7 +7,7 @@
 1. **El objetivo se cumplió y se comprobó.** El ETL en ADF integra CSV, PostgreSQL y MongoDB en `salida.csv`, con 2.930 filas × 81 campos. La salida aprobó las 28 pruebas del notebook, incluidas las comparaciones por PID contra las fuentes.
 2. **Tres decisiones permitieron conservar una fila por propiedad:**
    - tomar el CSV como universo y usar **LEFT JOIN** desde él, para no perder las 157 casas sin garaje ni las 2.917 sin piscina;
-   - **agregar `floordetail` por PID antes de unir**, que reduce 4.182 filas a 2.930 y evita duplicar 1.252 casas;
+   - **agregar `floordetail` por PID antes de unir**, que reduce 4.182 filas a 2.930 y evita repetir las casas con más de un piso;
    - usar **lookups con llave única** para los catálogos, que no pueden multiplicar filas.
 3. **Que el pipeline termine «Correcto» no significa que la salida esté bien.** Errores como las fuentes cruzadas, los encabezados distintos o `Central Air` mal convertido no detienen un data flow. Solo se detectan validando por fila y por PID contra las fuentes.
 
@@ -31,4 +31,4 @@
 - **Parametrizar los datasets** (carpeta y archivo) para reducir los 26 datasets actuales.
 - **Un solo data flow de integración**, o reutilizar el clúster con un TTL, para bajar los ≈7 min de arranque de Spark.
 - **Conectar ADF a Git desde el inicio**, para tener historial de cada cambio del pipeline y evitar ediciones simultáneas.
-- **Corregir `lectrical` y la anomalía `Garage Yr Blt = 2207`** dejando una regla documentada.
+- **Corregir `lectrical`** en la lista preventiva de faltantes.
