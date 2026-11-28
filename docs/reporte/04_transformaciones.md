@@ -58,7 +58,7 @@ Cada regla indica dónde se implementa, cuál es la expresión de ADF, cómo tra
 - **Operación:** un lookup por `Id` (`multiple: false`) seguido de una columna derivada con el código, por ejemplo `ExterQual_txt = toString(Code)`. Así `3` se convierte en `TA` y `1` en `Ex`. Para zona, `6` se convierte en `RL`.
 - **Códigos sin correspondencia:** quedarían nulos y luego `NA` (regla 4.6). En la ejecución no hubo ninguno: todas las calidades de la salida son Ex, Gd, TA, Fa o Po.
 - **Validación:** el notebook comprueba por PID los códigos derivados de `TypeQuality`. Las diferencias fueron 0 en `exterQual`, `exterCond`, `heatingQC` y `kitchenQual`.
-- **`Central Air`:** el booleano se convierte en `Y` (2.734 casas) o `N` (196) dentro de `drvGrLivAreaAire`. La conversión se hace una sola vez; ver la corrección #5 del [registro de cambios](../CAMBIOS_ETLinmo_corregido.md).
+- **`Central Air`:** el booleano se convierte en `Y` (2.734 casas) o `N` (196) dentro de `drvGrLivAreaAire`. La conversión se hace una sola vez, en este paso (ver la [sección 5.6](05_implementacion_adf.md)).
 
 ## 4.6 Datos ausentes de MongoDB (`NA` / `0`)
 

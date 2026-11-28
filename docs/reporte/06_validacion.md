@@ -59,15 +59,15 @@ La salida se validó en tres niveles:
 - **Transformaciones obligatorias:** las cuatro reglas (Gr Liv Area, FloorDetail, mes y año, Year Remod/Add) tienen **0 diferencias** por fila o por PID contra la fuente.
 - **MongoDB:** los valores coinciden campo a campo en las cuatro colecciones. Esto confirma que el `NA` / `0` se aplicó solo donde faltaba el documento o el campo.
 
-## 6.4 Errores encontrados durante la validación y correcciones
+## 6.4 Errores detectados durante el desarrollo y cómo se resolvieron
 
-La salida del pipeline original del equipo no pasaba la validación. Los problemas principales eran:
+El notebook se usó durante todo el desarrollo, no solo al final. En las primeras ejecuciones detectó:
 
-- solo 3 de los 81 encabezados coincidían;
-- la salida estaba partida en varios archivos `part-*.csv`;
-- las fuentes estaban cruzadas en la unión final;
-- `Central Air` se convertía dos veces;
-- algunos faltantes no se rellenaban porque los nombres de columna no coincidían;
-- el mes y el año salían de una fecha con hora.
+- encabezados que no coincidían con el contrato de 81 campos (solo 3 de 81);
+- la salida partida en varios archivos `part-*.csv`;
+- fuentes de Neon y Mongo cruzadas en la unión final;
+- `Central Air` convertido dos veces;
+- faltantes que no se rellenaban porque la lista usaba nombres de columna que ya no existían;
+- mes y año calculados sobre una fecha con hora.
 
-Se corrigieron en la versión `adf-ames-etlinmo-corregido` (ver el [registro de cambios](../CAMBIOS_ETLinmo_corregido.md)). Después se volvió a ejecutar el pipeline completo y se validó de nuevo: 28/28.
+Cada hallazgo se resolvió en el pipeline (ver la [sección 5.6](05_implementacion_adf.md)). Después se volvió a ejecutar el pipeline completo y se validó de nuevo, hasta llegar al resultado final: 28/28.

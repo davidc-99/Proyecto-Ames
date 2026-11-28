@@ -70,7 +70,7 @@ Los demás sinks usan la misma técnica para escribir un solo archivo cada uno.
 
 Casi todo el tiempo de `PL_02` y `PL_03` se va en el arranque del clúster de Spark (≈2 min 20 s cada uno). Los sinks tardan entre 6 y 7 s.
 
-## 5.6 Problemas encontrados en la implementación y cómo se resolvieron
+## 5.6 Problemas encontrados durante el desarrollo y cómo se resolvieron
 
 | Problema | Decisión |
 |---|---|
@@ -80,4 +80,4 @@ Casi todo el tiempo de `PL_02` y `PL_03` se va en el arranque del clúster de Sp
 | `Central Air` se convertía dos veces: el valor `Y` volvía a evaluarse contra `'true'` | Se eliminó la segunda conversión |
 | No había orden garantizado entre pipelines | Se creó `PL_00_ETL_Ames_Maestro` |
 
-El detalle completo está en el [registro de cambios](../CAMBIOS_ETLinmo_corregido.md).
+Todos se resolvieron durante el desarrollo, antes de la ejecución final del 26/11/2026.

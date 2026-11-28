@@ -20,8 +20,7 @@
 
 ## Anexos
 
-- **A.** [Registro de cambios y correcciones al pipeline](../CAMBIOS_ETLinmo_corregido.md), también en versión [Word](../Cambios_template_ETLinmo.docx).
-- **B.** [Documentación del pipeline](../../pipelines/pipelines.md) y JSON de cada recurso en [`pipelines/`](../../pipelines/).
-- **C.** [Plantilla ARM](../../pipelines/arm/ETLinmo_corregido_ARMTemplate.json) para desplegar la factoría.
-- **D.** [Descripción de la salida](../../out/out.md).
-- **E.** [Notebook de validación](../../notebooks/validar_salida_ames.ipynb) y su [guía de uso](../../notebooks/GUIA_USO_VALIDACION_SALIDA.md).
+- **A.** [Documentación del pipeline](../../pipelines/pipelines.md) y JSON de cada recurso en [`pipelines/`](../../pipelines/).
+- **B.** [Plantilla ARM](../../pipelines/arm/ARMTemplate_ETL_Ames.json) para desplegar la factoría.
+- **C.** [Descripción de la salida](../../out/out.md).
+- **D.** [Notebook de validación](../../notebooks/validar_salida_ames.ipynb) y su [guía de uso](../../notebooks/GUIA_USO_VALIDACION_SALIDA.md).

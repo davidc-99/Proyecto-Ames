@@ -26,5 +26,5 @@ El objetivo es verificable: la [sección 6](06_validacion.md) muestra que la sal
 
 ## Alcance
 
-- La factoría entregada es `adf-ames-etlinmo-corregido`. Parte del diseño original del equipo (factoría `ETLinmo`) e incorpora las correcciones descritas en el [registro de cambios](../CAMBIOS_ETLinmo_corregido.md).
+- El pipeline se construyó de forma iterativa: cada versión se ejecutó en ADF y se validó con el notebook del curso, y los hallazgos de cada ronda se incorporaron hasta llegar a la versión final. Los problemas más relevantes y cómo se resolvieron están en la [sección 5.6](05_implementacion_adf.md) y la [sección 6.4](06_validacion.md).
 - Las fuentes de `sources/` son las entregadas por el curso y no se modificaron. Toda limpieza ocurre dentro del pipeline.
