@@ -1,6 +1,6 @@
 # Proyecto Ames – ETL en Azure Data Factory
 
-Proyecto de la Unidad 4 de **Ingeniería de Datos I** (Maestría en Ciencia de Datos, Universidad Icesi).
+Proyecto de **Ingeniería de Datos I** (Maestría en Ciencia de Datos, Universidad Icesi).
 
 El equipo construyó en **Azure Data Factory (ADF)** un proceso ETL que integra por `PID` tres fuentes: un archivo CSV, una base PostgreSQL en Neon y cuatro colecciones de MongoDB Atlas. El resultado es [`out/salida.csv`](out/salida.csv), que tiene una fila por propiedad (2.930) y los 81 campos del enunciado en **camelCase**.
 
