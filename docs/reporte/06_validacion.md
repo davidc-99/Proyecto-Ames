@@ -16,7 +16,11 @@ La salida se validó en tres niveles:
 ## 6.2 Resultado
 
 - **Archivo validado:** `out/salida.csv`, generado por la ejecución del 26/11/2026 (8:21–8:29 p. m.).
-- **Resultado:** **28 de 28 pruebas aprobadas, 0 fallidas.**
+- **Resultado:** **28 de 28 pruebas aprobadas, 0 fallidas.** Los siete criterios de la rúbrica quedan en APROBADO (Figura 8).
+
+![Figura 8. Resumen del notebook de validación](img/fig8_notebook_resumen.png)
+
+*Figura 8. Resumen por criterio de `validar_salida_ames.ipynb`, ejecutado en Google Colab sobre `salida.csv` con `NAMING_STYLE = "camelCase"`: 28 pruebas y 0 errores.*
 
 **Tabla 4.** Resultados del notebook de validación.
 

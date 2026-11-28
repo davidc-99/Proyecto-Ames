@@ -17,7 +17,7 @@ Cada regla indica dónde se implementa, cuál es la expresión de ADF, cómo tra
 ## 4.2 Habitaciones y baños (`bedroom`, `fullBath`, `halfBath`)
 
 - **Dónde:** `DF_04_Union_Final` → `drvPidPisos` → `aggPisosPorCasa`, **antes** de `joinPisos`.
-- **Expresión:**
+- **Expresión** (Figura 3):
   ```
   aggregate(groupBy(PID), Bedrooms = sum(toInteger(Bedrooms)), FullBath = sum(toInteger(FullBath)), HalfBath = sum(toInteger(HalfBath)))
   ```
@@ -29,9 +29,13 @@ Cada regla indica dónde se implementa, cuál es la expresión de ADF, cómo tra
   En la salida queda `bedroom = 3`, `fullBath = 2` y `halfBath = 1`.
 - **Validación:** el notebook suma `FloorDetail` por PID y compara con la salida. Las diferencias fueron `bedroom 0`, `fullBath 0` y `halfBath 0`.
 
+![Figura 3. Configuración de aggPisosPorCasa](img/fig3_agg_pisos_por_casa.png)
+
+*Figura 3. Configuración del paso `aggPisosPorCasa` en `DF_04_Union_Final`: agrupa por `PID` y suma `Bedrooms`, `FullBath` y `HalfBath`.*
+
 ## 4.3 Fecha de venta (`moSold`, `yrSold`)
 
-- **Dónde:** `DF_04_Union_Final` → `drvMesAnioVenta`.
+- **Dónde:** `DF_04_Union_Final` → `drvMesAnioVenta` (Figura 4, últimas líneas).
 - **Tipo original:** `Sale Date` es `timestamp` en PostgreSQL y llega al staging como texto con hora, por ejemplo `2010-05-23 00:00:00`.
 - **Expresión:** toma los primeros 10 caracteres y los convierte a fecha. Si el formato fuera otro, intenta con `M/d/yyyy h:mm:ss a`.
   ```
@@ -62,7 +66,7 @@ Cada regla indica dónde se implementa, cuál es la expresión de ADF, cómo tra
 
 ## 4.6 Datos ausentes de MongoDB (`NA` / `0`)
 
-- **Dónde:** `DF_04_Union_Final` → `drvFaltantesNAyCero`, después de todas las uniones.
+- **Dónde:** `DF_04_Union_Final` → `drvFaltantesNAyCero`, después de todas las uniones (Figura 4).
 - **Regla:**
   - En los campos **cualitativos** (`GarageType`, `GarageFinish`, `GarageQual`, `GarageCond`, `BsmtQual`, `BsmtCond`, `BsmtExposure`, `BsmtFinType1/2`, `PoolQC`, `MiscFeature`), un valor nulo o vacío se convierte en `'NA'`.
   - En los campos **numéricos** (`GarageYrBlt`, `GarageCars`, `GarageArea`, `BsmtFinSF1/2`, `BsmtUnfSF`, `TotalBsmtSF`, `BsmtFullBath`, `BsmtHalfBath`, `PoolArea`, `MiscVal`), se convierte en `'0'`.
@@ -70,6 +74,10 @@ Cada regla indica dónde se implementa, cuál es la expresión de ADF, cómo tra
 - **Campo ausente:** ese campo queda nulo y recibe el mismo tratamiento. Por ejemplo, el PID 910201180 solo tiene `Garage Type = Detchd`, y en la salida queda `garageYrBlt = 0`, `garageCars = 0` y `garageFinish = NA`.
 - **Cero válido:** la condición solo actúa sobre nulos o vacíos, así que un `0` que venía de la fuente se conserva.
 - **Validación:** el notebook compara valor por valor las cuatro colecciones (pruebas 7.x) y no encontró diferencias. Las pruebas de marcadores confirman que solo se usan `NA` y `0`.
+
+![Figura 4. Script de drvFaltantesNAyCero y drvMesAnioVenta](img/fig4_regla_na_cero_y_fecha.png)
+
+*Figura 4. Script de `DF_04_Union_Final` (vista «Script» del data flow). Las cuatro primeras líneas son `drvFaltantesNAyCero`: los campos de texto vacíos pasan a `NA` y los numéricos a `0`. Las dos últimas son `drvMesAnioVenta`, que obtiene el mes y el año de `SaleDate` (sección 4.3).*
 
 La misma regla se aplica de forma preventiva al resto de los campos de texto y numéricos, en `DF_01` para el CSV y en `DF_04` para Neon.
 

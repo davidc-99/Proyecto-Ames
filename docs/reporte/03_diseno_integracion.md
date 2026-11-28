@@ -46,7 +46,11 @@ flowchart LR
 
 ## 3.4 Cómo comprobamos que no se perdieron ni multiplicaron propiedades
 
-1. **Por ejecución:** los cuatro sinks (`snkCasasLimpias`, `snkCasasMongo`, `snkNeon` y `snkSalida`) escribieron exactamente **2.930** filas, según el monitor de ADF.
+1. **Por ejecución:** los cuatro sinks (`snkCasasLimpias`, `snkCasasMongo`, `snkNeon` y `snkSalida`) escribieron exactamente **2.930** filas, según el monitor de ADF (Figura 2).
+
+   ![Figura 2. Ejecución de DF_04_Union_Final con 2.930 filas escritas](img/fig2_df04_filas_escritas.png)
+
+   *Figura 2. Detalle de la ejecución de `DF_04_Union_Final` (ADF → Supervisar), 26/11/2026: estado Success y 2.930 filas escritas por `snkSalida`, después de las tres uniones.*
 2. **Por PID:** el notebook verificó en `salida.csv` que hay 0 PID duplicados, 0 PID faltantes y 0 PID adicionales frente al CSV base.
 3. **Por colección:** la cardinalidad de `garage`, `bsmt`, `pool` y `misc` coincide documento a documento, sin PID duplicados ni ausentes (pruebas 7.x del notebook).
 

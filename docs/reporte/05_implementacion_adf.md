@@ -33,7 +33,11 @@ PL_00_ETL_Ames_Maestro
  └─ si termina bien         → PL_04_Union_Final      → DF_04_Union_Final → output/salida.csv
 ```
 
-Las dependencias usan la condición **Succeeded**. Si una copia falla, los data flows no corren con datos incompletos.
+Las dependencias usan la condición **Succeeded**. Si una copia falla, los data flows no corren con datos incompletos. La Figura 5 muestra el pipeline en ADF: las 11 copias a la izquierda convergen en `PL_02`, y de ahí la cadena sigue a `PL_03` y `PL_04`.
+
+![Figura 5. Canvas de PL_00_ETL_Ames_Maestro](img/fig5_pl00_maestro.png)
+
+*Figura 5. Canvas de `PL_00_ETL_Ames_Maestro` en ADF Studio: 11 actividades Execute Pipeline de copia en paralelo y, en secuencia, `PL_02_Limpieza_Csv` → `PL_03_Mongo_y_Neon` → `PL_04_Union_Final`.*
 
 ## 5.4 Data flows
 
@@ -43,6 +47,12 @@ Las dependencias usan la condición **Succeeded**. Si una copia falla, los data 
 | `DF_02_Integracion_Mongo` | 15 | casas limpias + 4 colecciones → `clean/MONGO1.csv` | `PID` a texto y 4 LEFT JOIN |
 | `DF_03_Transformacion_Neon` | 21 | amesdbtemp + typequality + mszoning → `clean/neon1.csv` | Gr Liv Area, Central Air Y/N, 5 lookups de catálogo |
 | `DF_04_Union_Final` | 14 | MONGO1 + neon1 + floordetail + saleproperty → `output/salida.csv` | Agregación de pisos, mes y año, uniones, NA / 0 y 81 columnas en camelCase |
+
+La Figura 6 muestra `DF_04_Union_Final`, el data flow que produce la salida. La fila superior es la cadena principal: tres LEFT JOIN por `PID`, la regla NA / 0, la selección de las 81 columnas y el sink. Debajo están las fuentes que se preparan antes de unirse: Neon, ventas (mes y año) y pisos (agregados por `PID`).
+
+![Figura 6. Canvas de DF_04_Union_Final](img/fig6_df04_union_final.png)
+
+*Figura 6. Canvas de `DF_04_Union_Final` en ADF Studio. Cada paso muestra su descripción. Los que aplican una regla del enunciado empiezan con «REGLA:».*
 
 **Configuración del sink final (`snkSalida`):**
 
@@ -56,7 +66,11 @@ Los demás sinks usan la misma técnica para escribir un solo archivo cada uno.
 ## 5.5 Ejecución y monitoreo
 
 - **Forma de ejecución:** `PL_00_ETL_Ames_Maestro` → **Agregar desencadenador → Desencadenar ahora**. Ejecuta la última versión publicada.
-- **Monitoreo:** en **Supervisar → Ejecuciones de canalización**.
+- **Monitoreo:** en **Supervisar → Ejecuciones de canalización** (Figura 7).
+
+![Figura 7. Ejecuciones de canalización del 26/11/2026](img/fig7_supervisar_ejecucion.png)
+
+*Figura 7. ADF → Supervisar → Ejecuciones de canalización, 26/11/2026. Las 15 ejecuciones terminaron en estado Correcto; `PL_00_ETL_Ames_Maestro` duró 7 min 30 s.*
 
 **Tabla 3.** Ejecución del 26/11/2026 (hora de Bogotá).
 

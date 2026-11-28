@@ -31,6 +31,12 @@ Cada fuente se copia primero a un archivo CSV de *staging* en Azure Blob Storage
 
 Todas las copias leyeron y escribieron la misma cantidad de filas, y esa cantidad coincide con la referencia. Esto confirma que la extracción no perdió registros.
 
+La Figura 1 muestra el caso que más interesa, `floordetail`, porque tiene varias filas por casa: ADF leyó 4.182 filas de PostgreSQL y escribió las mismas 4.182 en Blob Storage.
+
+![Figura 1. Detalle de la copia de floordetail en ADF](img/fig1_copia_floordetail.png)
+
+*Figura 1. Detalle de la actividad `CP_Neon_floordetail` (ADF → Supervisar), ejecución del 26/11/2026: 4.182 filas leídas y 4.182 escritas.*
+
 ## 2.2 Archivo AmesProperty.csv
 
 - **Ubicación en el pipeline:** `sources/input/AmesProperty.csv`, a través del dataset `DS_SRC_Csv_AmesProperty`.
